@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\User;
 use Illuminate\Http\Request;
 use App\Meeting;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class MeetingController extends Controller
 {
@@ -40,8 +41,10 @@ class MeetingController extends Controller
     {
         $data = $request->only('user_id','lawyer_id');
         Meeting::create($data);
-        return "New meeting created";
-        
+        $user = Auth::user();
+        $laywers = User::where(['type'=>2,'status'=>1])->get();
+        return view('client')->withClient($user)->withLawyer($laywers);
+
         //return "New meeting created";
     }
 

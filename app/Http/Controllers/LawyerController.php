@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\User;
+use App\Meeting;
 
 use Illuminate\Http\Request;
 
@@ -74,8 +75,8 @@ class LawyerController extends Controller
         $data = $request->only('status');
         $user = User::find($id);
         $user->update($data);
-            
-        return view('lawyer')->withLawyer($user);
+        $meetings = Meeting::where(['lawyer_id'=>$user->id])->get();
+        return view('lawyer')->withMeetings($meetings)->withLawyer($user);
         
     }
 
