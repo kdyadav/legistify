@@ -16,6 +16,7 @@ class CreateMeetingsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('lawyer_id');
+            $table->integer('status');
             $table->date('meeting_time');
             $table->timestamps();
         });

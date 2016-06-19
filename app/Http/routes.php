@@ -22,3 +22,16 @@ Route::group(['middleware'=>['web']],function(){
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('/sendmail', function(){
+	// Mail::send('', ['key' => 'value'], function($message)
+	// {
+	//     $message->to('kuldeep.yadav3012@gmail.com', 'Kuldeep Yadav')->subject('Trial mail');
+	// });
+	Mail::raw('Text to e-mail', function($message)
+	{
+	    $message->from('us@example.com', 'Laravel');
+
+	    $message->to('kuldeep.yadav3012@gmail.com')->cc('kuldeep.yadav3012@gmail.com');
+	});
+});

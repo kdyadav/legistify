@@ -39,11 +39,12 @@ class MeetingController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->only('user_id','lawyer_id');
+        $data = $request->only('user_id','lawyer_id','meeting_time');
         Meeting::create($data);
         $user = Auth::user();
         $laywers = User::where(['type'=>2,'status'=>1])->get();
-        return view('client')->withClient($user)->withLawyer($laywers);
+        $message = "Meeting Scheduled Succefully!!";
+        return view('client')->withClient($user)->withLawyer($laywers)->withMessage($message);
 
         //return "New meeting created";
     }
@@ -81,9 +82,14 @@ class MeetingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        return "Update";
-        //
+        $data = $request->only('status');
+        $meeting = Meeting::find($id);
+        $meeting->update($data);
+        if($data['status'] == 1) mail($meeting->user->email,"Meeting Confirmation","Your meeting Accepted");
+        else                   mail($meeting->user->email,"Meeting Confirmation","Your meeting rejected");
+        $lawyer = Auth::user();
+        $meetings = Meeting::where(['lawyer_id'=>$lawyer->id])->get();
+        return view('lawyer')->withMeetings($meetings)->withLawyer($lawyer);
     }
 
     /**

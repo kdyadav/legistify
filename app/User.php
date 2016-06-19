@@ -15,6 +15,7 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Meeting');
     }
+
     protected $fillable = [
         'name', 'email', 'password','type','status'
     ];
